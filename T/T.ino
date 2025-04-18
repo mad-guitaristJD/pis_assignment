@@ -22,8 +22,8 @@ const int CS =9;
 const int CLK = 13;
 LedControl lc = LedControl(DIN, CLK, CS,1);
 
-const int varXPin = A3;//X Value  from Joystick
-const int varYPin = A4;//Y Value from Joystick
+const int varXPin = A0;//X Value  from Joystick
+const int varYPin = A1;//Y Value from Joystick
 
 byte pic[8] = {0,0,0,0,0,0,0,0};//The 8 rows of the LED Matrix
 
