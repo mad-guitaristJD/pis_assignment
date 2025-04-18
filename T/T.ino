@@ -22,43 +22,39 @@ const int CS =9;
 const int CLK = 13;
 LedControl lc = LedControl(DIN, CLK, CS,1);
 
-const int varXPin = A0;//X Value  from Joystick
-const int varYPin = A1;//Y Value from Joystick
+const int varXPin = A0;
+const int varYPin = A1;
 
-byte pic[8] = {0,0,0,0,0,0,0,0};//The 8 rows of the LED Matrix
+byte pic[8] = {0,0,0,0,0,0,0,0};
 
-Snake snake = {{1,5},{{0,5}, {1,5}}, 2, {1,0}};//Initialize a snake object
-Apple apple = {(int)random(0,8),(int)random(0,8)};//Initialize an apple object
+Snake snake = {{1,5},{{0,5}, {1,5}}, 2, {1,0}};
+Apple apple = {(int)random(0,8),(int)random(0,8)};
 
-//Variables To Handle The Game Time
+
 float oldTime = 0;
 float timer = 0;
 float updateRate = 3;
 
-int i,j;//Counters
+int i,j;
 void setup() {
-  // put your setup code here, to run once:
-    /*
-   The MAX72XX is in power-saving mode on startup,
-   we have to do a wakeup call
-   */
+  
   lc.shutdown(0,false);
-  /* Set the brightness to a medium values */
+  
   lc.setIntensity(0,8);
-  /* and clear the display */
+  
   lc.clearDisplay(0);
 
-  //Set Joystick Pins as INPUTs
+  
   pinMode(varXPin, INPUT);
   pinMode(varYPin, INPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
   float deltaTime = calculateDeltaTime();
   timer += deltaTime;
 
-  //Check For Inputs
+  
   int xVal = analogRead(varXPin);
   int yVal = analogRead(varYPin);
   
@@ -76,13 +72,13 @@ void loop() {
     snake.dir[1] = 0;
   }
   
-  //Update
+  
   if(timer > 1000/updateRate){
     timer = 0;
     Update();
   }
   
-  //Render
+
   Render();
   
 }
@@ -100,11 +96,10 @@ void reset(){
   }
 }
 void Update(){
-  reset();//Reset (Clear) the 8x8 LED matrix
+  reset();
   
   int newHead[2] = {snake.head[0]+snake.dir[0], snake.head[1]+snake.dir[1]};
 
-  //Handle Borders
   if(newHead[0]==8){
     newHead[0]=0;
   }else if(newHead[0]==-1){
@@ -115,24 +110,20 @@ void Update(){
     newHead[1]=7;
   }
   
-  //Check If The Snake hits itself
    for(j=0;j<snake.len;j++){
     if(snake.body[j][0] == newHead[0] && snake.body[j][1] == newHead[1]){
-      //Pause the game for 1 sec then Reset it
       delay(1000);
-      snake = {{1,5},{{0,5}, {1,5}}, 2, {1,0}};//Reinitialize the snake object
-      apple = {(int)random(0,8),(int)random(0,8)};//Reinitialize an apple object
+      snake = {{1,5},{{0,5}, {1,5}}, 2, {1,0}};
+      apple = {(int)random(0,8),(int)random(0,8)};
       return;
     }
   }
-
-  //Check if The snake ate the apple
   if(newHead[0] == apple.rPos && newHead[1] ==apple.cPos){
     snake.len = snake.len+1;
     apple.rPos = (int)random(0,8);
     apple.cPos = (int)random(0,8);
   }else{
-    removeFirst();//Shifting the array to the left
+    removeFirst();
   }
   
   snake.body[snake.len-1][0]= newHead[0];
@@ -141,7 +132,6 @@ void Update(){
   snake.head[0] = newHead[0];
   snake.head[1] = newHead[1];
   
-  //Update the pic Array to Display(snake and apple)
   for(j=0;j<snake.len;j++){
     pic[snake.body[j][0]] |= 128 >> snake.body[j][1];
   }

@@ -1,21 +1,18 @@
-//Original game by Yurii Shevchuk - https://github.com/itdxer/ArduinoGame/tree/master
-//Modified by Tech Talkies (https://www.youtube.com/@techtalkies1)
-
 #include <LedControl.h>
 #include <Arduino.h>
 
-/* Display PINs */
+
 #define CLK 13
 #define CS 9
 #define DIN 11
 
 LedControl lc = LedControl(DIN, CLK, CS, 1);
 
-/* Joystick PINs */
+
 #define VRX A0
 #define VRY A1
 
-// Messages
+
 int gameOverMessage[10][8] = {
   { 0x00, 0x3c, 0x40, 0x40, 0x48, 0x44, 0x38, 0x00 },  // G
   { 0x00, 0x38, 0x44, 0x7c, 0x44, 0x44, 0x44, 0x00 },  // A
