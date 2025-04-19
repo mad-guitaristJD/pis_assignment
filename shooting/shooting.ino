@@ -9,8 +9,8 @@
 LedControl lc = LedControl(DIN, CLK, CS, 1);
 
 
-#define VRX A0
-#define VRY A1
+#define VRX A1
+#define VRY A0
 
 
 int gameOverMessage[10][8] = {

@@ -36,8 +36,13 @@ bool startGame = false;
 int marquee_pos_x = 0;              
 
 
+void setRotatedPixel(int x, int y, bool state = true) {
+  lmd.setPixel(7-x, 7-y, state);
+}
+
+
 void drawBird(int x, int y) {
-  lmd.setPixel(x, y, true);
+  setRotatedPixel(x, y, true);
 }
 
 
@@ -45,12 +50,12 @@ void drawObstacle(int hole)
 {
   int height = 0;
   while(height != hole){
-    lmd.setPixel(height, timeLine, true);
+    setRotatedPixel(height, timeLine, true);
     height++;
   }
   height = height + 3;
   while(height != 8){
-    lmd.setPixel(height, timeLine, true);
+    setRotatedPixel(height, timeLine, true);
     height++;
   }
   
@@ -94,8 +99,8 @@ void gameOver(){
   for(int j = 0; j < 3; j++){
     lmd.clear();
     for (int i = 0; i < 8; i++) {
-      lmd.setPixel(i, i, true);                 
-      lmd.setPixel(i, 7 - i, true);             
+      setRotatedPixel(i, i, true);                 
+      setRotatedPixel(i, 7 - i, true);             
       delay(100);  
     }
     lmd.display();
@@ -144,7 +149,7 @@ void drawSprite( byte* sprite, int x, int y, int width, int height )
   {
     for( int ix = 0; ix < width; ix++ )
     {
-      lmd.setPixel(x + ix, y + iy, (bool)(sprite[iy] & mask ));
+      setRotatedPixel(x + ix, y + iy, (bool)(sprite[iy] & mask ));
 
       mask = mask >> 1;
     }

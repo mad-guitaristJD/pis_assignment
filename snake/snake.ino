@@ -1,6 +1,5 @@
 #include <SPI.h>
 
-
 #define CS 9
 
 
@@ -142,8 +141,11 @@ void refresh_scene() {
   snake_move();
   spawn_snake();
   blob_generator();
-  for (int i = 1; i < 9; i++)
-    SendData(i, scene[i - 1]);
+  byte rotated_scene[8];
+rotate_scene_90_clockwise(scene, rotated_scene);
+for (int i = 1; i < 9; i++)
+  SendData(i, rotated_scene[i - 1]);
+
 }
 
 void update_left() {
@@ -153,6 +155,18 @@ void update_left() {
 void update_right() {
   move_right = 1;
 }
+
+void rotate_scene_90_clockwise(byte input[8], byte output[8]) {
+  for (int i = 0; i < 8; i++) {
+    output[i] = 0;
+    for (int j = 0; j < 8; j++) {
+      if (input[7 - j] & (1 << i)) {
+        output[i] |= (1 << j);
+      }
+    }
+  }
+}
+
 
 void setup() {
   pinMode(left_button, INPUT_PULLUP);
@@ -166,6 +180,7 @@ void setup() {
   SendData(INTENSITY, 0x01);    
   SendData(SCAN_LIMIT, 0x0f);    
   SendData(SHUTDOWN, 0x01);      
+
 
   randomSeed(analogRead(0));
 
